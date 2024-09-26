@@ -1,11 +1,9 @@
 package org.translation;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,10 +14,14 @@ import org.json.JSONObject;
 public class JSONTranslationExample {
 
     public static final int CANADA_INDEX = 30;
+    private CountryCodeConverter countryConverter;
+    private LanguageCodeConverter languageConverter;
     private final JSONArray jsonArray;
 
     // Note: CheckStyle is configured so that we are allowed to omit javadoc for constructors
     public JSONTranslationExample() {
+        this.countryConverter = new CountryCodeConverter();
+        this.languageConverter = new LanguageCodeConverter();
         try {
             // this next line of code reads in a file from the resources folder as a String,
             // which we then create a new JSONArray object from.
@@ -37,13 +39,9 @@ public class JSONTranslationExample {
      * @return the Spanish translation of Canada
      */
     public String getCanadaCountryNameSpanishTranslation() {
-
         JSONObject canada = jsonArray.getJSONObject(CANADA_INDEX);
         return canada.getString("es");
     }
-
-    // TODO Task: Complete the method below to generalize the above to get the country name
-    //            for any country code and language code from sample.json.
 
     /**
      * Returns the name of the country based on the provided country and language codes.
@@ -52,7 +50,13 @@ public class JSONTranslationExample {
      * @return the translation of country to the given language or "Country not found" if there is no translation.
      */
     public String getCountryNameTranslation(String countryCode, String languageCode) {
-        Scanner scanner = new Scanner(new File("country-codes.txt"));
+        for (int i = 0; i < jsonArray.length() - 1; i++) {
+            JSONObject tempCountry = jsonArray.getJSONObject(i);
+            // System.out.println(tempCountry);
+            if (tempCountry.getString("alpha3").equals(countryCode)) {
+                return tempCountry.getString(languageCode);
+            }
+        }
         return "Country not found";
     }
 
@@ -62,7 +66,6 @@ public class JSONTranslationExample {
      */
     public static void main(String[] args) {
         JSONTranslationExample jsonTranslationExample = new JSONTranslationExample();
-
         System.out.println(jsonTranslationExample.getCanadaCountryNameSpanishTranslation());
         String translation = jsonTranslationExample.getCountryNameTranslation("can", "es");
         System.out.println(translation);
