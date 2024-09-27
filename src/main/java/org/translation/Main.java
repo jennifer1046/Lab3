@@ -60,7 +60,9 @@ public class Main {
             //            convert it back to its 2-letter language code when calling translate.
             //            Note: you should use the actual names in the message printed below though,
             //            since the user will see the displayed message.
-            System.out.println(country + " in " + language + " is " + translator.translate(country, language));
+            System.out.println(country + " in " + language + " is "
+                    + translator.translate(countryCodeConverter.fromCountry(country),
+                    languageCodeConverter.fromLanguage(language)));
             System.out.println("Press enter to continue or quit to exit.");
             Scanner s = new Scanner(System.in);
             String textTyped = s.nextLine();
@@ -78,6 +80,7 @@ public class Main {
         List<String> countriesSorted = new ArrayList<>();
 
         for (String countryCode : countries) {
+            // System.out.println("CountryCode: " + countryCode);
             countriesSorted.add(countryCodeConverter.fromCountryCode(countryCode));
         }
 
@@ -97,10 +100,12 @@ public class Main {
     // Note: CheckStyle is configured so that we don't need javadoc for private methods
     private static String promptForLanguage(Translator translator, String country) {
         languageCodeConverter = new LanguageCodeConverter();
-        List<String> languages = translator.getCountryLanguages(country);
+        countryCodeConverter = new CountryCodeConverter();
+        List<String> languages = translator.getCountryLanguages(countryCodeConverter.fromCountry(country));
         List<String> languageSorted = new ArrayList<>();
 
         for (String languageCode : languages) {
+            // System.out.println("Language: " + languageCode);
             languageSorted.add(languageCodeConverter.fromLanguageCode(languageCode));
         }
 

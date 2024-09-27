@@ -38,7 +38,7 @@ public class CountryCodeConverter {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
 
-            lines = lines.subList(1, lines.size() - 1);
+            lines = lines.subList(1, lines.size());
 
             this.countryNames = new ArrayList<>();
             this.countryCodes2 = new ArrayList<>();
@@ -48,8 +48,8 @@ public class CountryCodeConverter {
             for (String line : lines) {
                 String[] parts = line.split("\t");
                 this.countryNames.add(parts[0]);
-                this.countryCodes2.add(parts[1]);
-                this.countryCodes3.add(parts[2]);
+                this.countryCodes2.add(parts[1].toLowerCase());
+                this.countryCodes3.add(parts[2].toLowerCase());
                 this.countryCodeNumeric.add(parts[2 + 1]);
             }
 

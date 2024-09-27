@@ -34,7 +34,7 @@ public class LanguageCodeConverter {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
 
-            lines = lines.subList(1, lines.size() - 1);
+            lines = lines.subList(1, lines.size());
 
             languageNames = new ArrayList<>();
             languageCodes = new ArrayList<>();
@@ -44,6 +44,10 @@ public class LanguageCodeConverter {
                 languageNames.add(parts[0]);
                 languageCodes.add(parts[1]);
             }
+
+            // for (String code: languageCodes) {
+            //    System.out.println(code);
+            // }
 
         }
         catch (IOException | URISyntaxException ex) {
@@ -58,6 +62,7 @@ public class LanguageCodeConverter {
      * @return the name of the language corresponding to the code
      */
     public String fromLanguageCode(String code) {
+        System.out.println("Code required to convert: " + code);
         return languageNames.get(languageCodes.indexOf(code));
     }
 
@@ -67,6 +72,7 @@ public class LanguageCodeConverter {
      * @return the 2-letter code of the language
      */
     public String fromLanguage(String language) {
+        System.out.println(language);
         return languageCodes.get(languageNames.indexOf(language));
     }
 

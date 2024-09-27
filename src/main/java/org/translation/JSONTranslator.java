@@ -50,12 +50,16 @@ public class JSONTranslator implements Translator {
 
             JSONArray jsonArray = new JSONArray(jsonString);
 
-            for (int i = 0; i < jsonArray.length() - 1; i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
                 if (!countryMap.containsKey(jsonObj.getString("alpha3"))) {
                     this.countryMap.put(jsonObj.getString("alpha3"), jsonObj);
                 }
             }
+
+            // for (String code: this.countryMap.keySet()) {
+            // System.out.println(code);
+            // }
 
         }
         catch (IOException | URISyntaxException ex) {
@@ -67,7 +71,11 @@ public class JSONTranslator implements Translator {
     public List<String> getCountryLanguages(String country) {
         JSONObject jsonObj = countryMap.get(country);
         List<String> languageCodes = new ArrayList<>(jsonObj.keySet());
-        return languageCodes.subList(2 + 1, languageCodes.size());
+        // return languageCodes.subList(2 + 1, languageCodes.size());
+        languageCodes.remove("id");
+        languageCodes.remove("alpha3");
+        languageCodes.remove("alpha2");
+        return languageCodes;
     }
 
     @Override
